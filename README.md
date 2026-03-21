@@ -74,9 +74,7 @@ Start the development server: npm run dev
 
 +8% Average Tax Savings identified through proactive regime optimization.
 
-⚖️ License
 
-Distributed under the MIT License. See LICENSE for more information.
 
 👥 Contact
 
