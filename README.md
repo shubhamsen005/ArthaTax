@@ -20,7 +20,7 @@ Frontend: Next.js, Tailwind CSS, ReactMarkdown (for AI report rendering).
 
 Backend: FastAPI (Python), Tesseract OCR.
 
-AI Engine: Google Gemini 1.5 Pro (via Gemini API).
+AI Engine: Google Gemini 3 Pro (via Gemini API).
 
 State Management: React Hooks & LocalStorage (for secure session persistence).
 
