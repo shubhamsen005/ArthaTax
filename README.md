@@ -1,80 +1,232 @@
-ArthaTax 🇮🇳 🤖
+# ArthaTax (TaxFiler AI Assistant)
 
-ArthaTax is an intelligent AI-driven tax manager designed specifically for the Indian landscape. It bridges the "oblivious user" gap—helping absolute beginners navigate the complexities of the Indian Income Tax Act through automated document synthesis and explainable AI (XAI) coaching.
+ArthaTax is an AI-assisted tax document analysis project built with a **FastAPI backend** and a **Next.js frontend**. It allows users to upload financial documents such as Form 16, salary slips, bank statements, and related records, extract text using OCR, generate AI-based tax analysis, and continue asking tax-related follow-up questions in a chat-style interface.
 
-🌟 Key Features
+## Features
 
-Multi-Document Synthesis: Automatically cross-references data from Form 16, Form 26AS, and Demat Statements to build a consolidated "Money View."
+- Upload financial documents
+- Extract text from uploaded images using OCR
+- Generate AI-powered tax summaries and analysis
+- Continue asking follow-up tax questions in chat format
+- Maintain session-based context for each user
+- Frontend interface with login, signup, landing page, and tax assistant workspace
 
-Smart Auditing: Detects critical discrepancies, such as employer over-deductions in Form 16 or missing TDS credits in bank interests.
+## Tech Stack
 
-Proactive Optimization: Real-time comparison between Old vs. New Tax Regimes to ensure maximum savings based on current financial data.
+### Frontend
+- Next.js
+- React
+- TypeScript
+- Tailwind CSS
+- Framer Motion
+- React Markdown
+- remark-gfm
 
-Explainable AI (XAI): Provides human-readable justifications for every suggested deduction (80C, 80D, 80G, etc.) using the Gemini 1.5 Pro engine.
+### Backend
+- FastAPI
+- Python
+- Pytesseract
+- Pillow
+- python-dotenv
+- Google Gemini API integration
 
-Zero-Touch Ingestion: Leverages Tesseract OCR to transform unstructured PDFs and images into structured tax insights instantly.
+## Project Structure
+ArthaTax/
+  backend/
+    app/
+      main.py
+    requirements.txt
 
-🛠️ Tech Stack
+  frontend/
+    app/
+      layout.tsx
+      page.tsx
+      login/
+        page.tsx
+      signup/
+        page.tsx
+      taxfiler/
+        page.tsx
+      styles/
+        globals.css
+    next-env.d.ts
+    package.json
+    package-lock.json
+    postcss.config.js
+    tailwind.config.js
+    tsconfig.json
 
-Frontend: Next.js, Tailwind CSS, ReactMarkdown (for AI report rendering).
+## How It Works
 
-Backend: FastAPI (Python), Tesseract OCR.
+### 1. OCR Extraction
 
-AI Engine: Google Gemini 3 Pro (via Gemini API).
+The backend provides an endpoint that accepts an uploaded file and extracts text from the image using Tesseract OCR.
 
-State Management: React Hooks & LocalStorage (for secure session persistence).
+### 2. AI Tax Analysis
 
-🚀 The User Journey
+After text extraction, the backend sends the extracted content to a Gemini model and requests a structured Markdown-based tax report. The report includes:
 
-Access: Simple, jargon-free login/signup.
+* income source identification
+* tax deductions and TDS details
+* estimated taxable income
+* suggested ITR form
+* risk and compliance insights
+* recommendations and summary tables
 
-Ingestion: Drag-and-drop your Form 16, 26AS, and Investment statements.
+### 3. Interactive Chat
 
-Extraction: The system runs OCR to parse income heads, PAN details, and tax credits.
+After the first analysis, users can continue chatting with the AI assistant. The backend stores session context in memory and uses it to answer follow-up queries.
 
-Analysis: Gemini AI synthesizes the data, identifying refunds and risks.
+### 4. Additional Document Uploads
 
-Action Plan: Receive a step-by-step roadmap for filing (e.g., "Switch to ITR-2", "Claim 80D").
+Users can upload more documents later, and the extracted text is added to the ongoing session context.
 
-Chat Coach: Ask follow-up questions to the RAG-powered tax bot in natural language.
+## Available Backend Endpoints
 
-📦 Installation & Setup
+### `GET /healthz`
 
-Prerequisites
+Checks whether the backend is running.
 
-Python 3.9+
+### `POST /extract-text`
 
-Node.js 18+
+Uploads a file and returns extracted OCR text.
 
-Tesseract OCR engine installed on your system.
+### `POST /upload-doc`
 
-Backend Setup
+Uploads an additional document and appends its extracted text to the user session.
 
-Navigate to /backend
+### `POST /analyze-text`
 
-Install dependencies: pip install -r requirements.txt
+Accepts extracted text and returns an AI-generated tax analysis report.
 
-Set your Gemini API key in .env: GEMINI_API_KEY=your_key_here
+### `POST /chat`
 
-Start the server: uvicorn main:app --reload
+Accepts user follow-up questions and returns contextual AI responses.
 
-Frontend Setup
+## Setup Instructions
 
-Navigate to /frontend
+## Backend Setup
 
-Install dependencies: npm install
+1. Go to the backend folder:
 
-Start the development server: npm run dev
+```bash
+cd backend
+```
 
-📊 Performance Metrics
+2. Create a virtual environment:
 
-98% Accuracy in data extraction from standard Form 16 documents.
+```bash
+python -m venv venv
+```
 
-40% Reduction in manual review time for tax compliance.
+3. Activate the environment:
 
-+8% Average Tax Savings identified through proactive regime optimization.
+### Windows
 
+```bash
+venv\Scripts\activate
+```
 
+### Mac/Linux
+
+```bash
+source venv/bin/activate
+```
+
+4. Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+5. Create a `.env` file inside `backend/` and add your Gemini API key:
+
+```env
+GEMINI_API_KEY=your_api_key_here
+```
+
+6. Run the FastAPI server:
+
+```bash
+uvicorn app.main:app --reload
+```
+
+The backend should start on:
+
+```text
+http://127.0.0.1:8000
+```
+
+## Frontend Setup
+
+1. Go to the frontend folder:
+
+```bash
+cd frontend
+```
+
+2. Install dependencies:
+
+```bash
+npm install
+```
+
+3. Run the development server:
+
+```bash
+npm run dev
+```
+
+The frontend should start on:
+
+```text
+http://localhost:3000
+```
+
+## Environment Variables
+
+Create a `.env` file in the backend directory and add:
+
+```env
+GEMINI_API_KEY=your_api_key_here
+```
+
+Do not upload your real `.env` file to GitHub.
+
+## Important Notes
+
+* The backend currently allows CORS for `http://localhost:3000` and `http://127.0.0.1:3000`
+* Session memory is stored in a Python dictionary, so it is temporary and resets when the server restarts
+* OCR quality depends on image clarity and Tesseract installation
+* The project currently uses local browser storage for basic login state on the frontend
+* Sensitive files such as `.env`, virtual environments, and build folders should not be committed
+
+## Recommended `.gitignore`
+
+```gitignore
+.venv/
+venv/
+__pycache__/
+*.pyc
+.env
+node_modules/
+.next/
+```
+
+## Future Improvements
+
+* Replace in-memory sessions with a database
+* Add proper authentication
+* Support PDF parsing directly
+* Improve OCR preprocessing
+* Add tax year selection and user profile persistence
+* Deploy frontend and backend for production use
+* Add better validation and error handling
+* Upgrade Gemini integration to the latest maintained SDK if needed
+
+## Author
+
+Built as an AI-powered tax assistance project using FastAPI and Next.js.
 
 👥 Contact
 
