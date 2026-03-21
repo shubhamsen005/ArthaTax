@@ -31,6 +31,8 @@ ArthaTax is an AI-assisted tax document analysis project built with a **FastAPI 
 - Google Gemini API integration
 
 ## Project Structure
+
+```text
 ArthaTax/
   backend/
     app/
@@ -55,6 +57,7 @@ ArthaTax/
     postcss.config.js
     tailwind.config.js
     tsconfig.json
+````
 
 ## How It Works
 
@@ -227,6 +230,8 @@ node_modules/
 ## Author
 
 Built as an AI-powered tax assistance project using FastAPI and Next.js.
+
+```
 
 👥 Contact
 
